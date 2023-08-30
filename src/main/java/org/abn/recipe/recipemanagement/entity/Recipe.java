@@ -1,8 +1,6 @@
 package org.abn.recipe.recipemanagement.entity;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +16,7 @@ import java.util.List;
 public class Recipe {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long recipeId;
     private String name;
     private boolean vegetarian;
@@ -25,4 +24,14 @@ public class Recipe {
     @ElementCollection
     private List<String> ingredients;
     private String instructions;
+
+    public Recipe(String name, boolean vegetarian, int servings, List<String> ingredients, String instructions) {
+        this.name = name;
+        this.vegetarian = vegetarian;
+        this.servings = servings;
+        this.ingredients = ingredients;
+        this.instructions = instructions;
+    }
+
+
 }
