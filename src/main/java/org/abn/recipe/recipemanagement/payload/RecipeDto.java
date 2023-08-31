@@ -13,7 +13,6 @@ import java.util.List;
 @Builder
 public class RecipeDto {
 
-    private Long recipeId;
     private String name;
     private boolean vegetarian;
     private int servings;

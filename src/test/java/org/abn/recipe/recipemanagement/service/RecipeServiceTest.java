@@ -6,6 +6,9 @@ import org.abn.recipe.recipemanagement.exception.ResourceNotFoundException;
 import org.abn.recipe.recipemanagement.mapper.RecipeMapper;
 import org.abn.recipe.recipemanagement.payload.RecipeDto;
 import org.abn.recipe.recipemanagement.repository.RecipeRepository;
+import org.abn.recipe.recipemanagement.search.RecipeSpecification;
+import org.abn.recipe.recipemanagement.search.SearchCriteria;
+import org.abn.recipe.recipemanagement.search.SearchOperation;
 import org.abn.recipe.recipemanagement.service.impl.RecipeServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +26,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -176,6 +181,21 @@ public class RecipeServiceTest {
     }
 
 
+    @Test
+    @DisplayName("Service Class Test -> Seacrh By Single Criteria")
+    void givenSingleCriteria_whenSearch_ThenReturnSearchResult() {
+
+        List<SearchCriteria> criteriaList = new ArrayList<>();
+        criteriaList.add(new SearchCriteria("name", SearchOperation.EQUAL, "Recipe 1"));
+
+        List<RecipeDto> expected = List.of(recipeDto1);
+        when(recipeRepository.findAll(isA(RecipeSpecification.class))).thenReturn(List.of(recipe));
+        when(recipeMapper.recipeToRecipeDto(recipe)).thenReturn(recipeDto1);
+
+        List<RecipeDto> result = classUnderTest.search(criteriaList);
+
+        assertThat(expected).isEqualTo(result);
+    }
 
 
 }
