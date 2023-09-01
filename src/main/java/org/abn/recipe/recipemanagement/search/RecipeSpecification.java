@@ -4,15 +4,13 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import lombok.RequiredArgsConstructor;
 import org.abn.recipe.recipemanagement.entity.Recipe;
 import org.springframework.data.jpa.domain.Specification;
 
+@RequiredArgsConstructor
 public class RecipeSpecification implements Specification<Recipe> {
-    private SearchCriteria criteria;
-
-    public RecipeSpecification(SearchCriteria criteria) {
-        this.criteria = criteria;
-    }
+    private final SearchCriteria criteria;
 
     @Override
     public Predicate toPredicate(Root<Recipe> root, CriteriaQuery<?> query, CriteriaBuilder builder) {

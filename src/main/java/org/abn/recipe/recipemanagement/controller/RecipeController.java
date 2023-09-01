@@ -2,7 +2,6 @@ package org.abn.recipe.recipemanagement.controller;
 
 
 import lombok.RequiredArgsConstructor;
-import org.abn.recipe.recipemanagement.entity.Recipe;
 import org.abn.recipe.recipemanagement.exception.ResourceNotFoundException;
 import org.abn.recipe.recipemanagement.payload.RecipeDto;
 import org.abn.recipe.recipemanagement.search.SearchCriteria;

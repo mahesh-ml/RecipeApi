@@ -1,6 +1,5 @@
 package org.abn.recipe.recipemanagement.service;
 
-import org.abn.recipe.recipemanagement.entity.Recipe;
 import org.abn.recipe.recipemanagement.payload.RecipeDto;
 import org.abn.recipe.recipemanagement.search.SearchCriteria;
 

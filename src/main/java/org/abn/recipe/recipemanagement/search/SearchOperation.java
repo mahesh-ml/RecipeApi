@@ -10,5 +10,5 @@ public enum SearchOperation {
     LIKE,
     NOT_LIKE,
     IN,
-    NOT_IN;
+    NOT_IN
 }

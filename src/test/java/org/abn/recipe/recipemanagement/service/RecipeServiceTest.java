@@ -2,11 +2,11 @@ package org.abn.recipe.recipemanagement.service;
 
 
 import org.abn.recipe.recipemanagement.entity.Recipe;
+import org.abn.recipe.recipemanagement.exception.InvalidPayloadException;
 import org.abn.recipe.recipemanagement.exception.ResourceNotFoundException;
 import org.abn.recipe.recipemanagement.mapper.RecipeMapper;
 import org.abn.recipe.recipemanagement.payload.RecipeDto;
 import org.abn.recipe.recipemanagement.repository.RecipeRepository;
-import org.abn.recipe.recipemanagement.search.RecipeSpecification;
 import org.abn.recipe.recipemanagement.search.SearchCriteria;
 import org.abn.recipe.recipemanagement.search.SearchOperation;
 import org.abn.recipe.recipemanagement.service.impl.RecipeServiceImpl;
@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isA;
@@ -182,19 +184,42 @@ public class RecipeServiceTest {
 
 
     @Test
-    @DisplayName("Service Class Test -> Seacrh By Single Criteria")
+    @DisplayName("Service Class Test -> Search By Single Criteria")
     void givenSingleCriteria_whenSearch_ThenReturnSearchResult() {
 
         List<SearchCriteria> criteriaList = new ArrayList<>();
         criteriaList.add(new SearchCriteria("name", SearchOperation.EQUAL, "Recipe 1"));
 
         List<RecipeDto> expected = List.of(recipeDto1);
-        when(recipeRepository.findAll(isA(RecipeSpecification.class))).thenReturn(List.of(recipe));
+        when(recipeRepository.findAll(isA(Specification.class))).thenReturn(List.of(recipe));
         when(recipeMapper.recipeToRecipeDto(recipe)).thenReturn(recipeDto1);
 
         List<RecipeDto> result = classUnderTest.search(criteriaList);
 
         assertThat(expected).isEqualTo(result);
+    }
+
+    @Test
+    @DisplayName("Service Class Test -> Search By Empty Criteria")
+    void givenEmptyCriteria_whenSearch_ThenReturnEmpty() {
+        assertThrows(InvalidPayloadException.class, () -> classUnderTest.search(new ArrayList<>()));
+    }
+
+    @Test
+    @DisplayName("Service Class Test -> Search By Multi Criteria")
+    void givenMultipleCriteria_whenSearch_ThenReturnResult() {
+        List<SearchCriteria> criteriaList = List.of(
+                new SearchCriteria("name", SearchOperation.EQUAL, "Recipe 1"),
+                new SearchCriteria("servings", SearchOperation.EQUAL, 4)
+        );
+        when(recipeRepository.findAll(any(Specification.class))).thenReturn(List.of(recipe));
+        when(recipeMapper.recipeToRecipeDto(recipe)).thenReturn(recipeDto1);
+
+
+        List<RecipeDto> result = classUnderTest.search(criteriaList);
+        assertEquals(1, result.size());
+        assertThat(result.get(0)).isEqualTo(recipeDto1);
+
     }
 
 

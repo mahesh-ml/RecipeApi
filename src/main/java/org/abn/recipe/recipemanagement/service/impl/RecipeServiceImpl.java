@@ -2,18 +2,19 @@ package org.abn.recipe.recipemanagement.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.abn.recipe.recipemanagement.entity.Recipe;
+import org.abn.recipe.recipemanagement.exception.InvalidPayloadException;
 import org.abn.recipe.recipemanagement.exception.ResourceNotFoundException;
 import org.abn.recipe.recipemanagement.mapper.RecipeMapper;
 import org.abn.recipe.recipemanagement.payload.RecipeDto;
 import org.abn.recipe.recipemanagement.repository.RecipeRepository;
 import org.abn.recipe.recipemanagement.search.RecipeSpecification;
 import org.abn.recipe.recipemanagement.search.SearchCriteria;
-import org.abn.recipe.recipemanagement.search.SearchOperation;
 import org.abn.recipe.recipemanagement.service.IRecipeService;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,20 +63,22 @@ public class RecipeServiceImpl implements IRecipeService {
     @Override
     public List<RecipeDto> search(List<SearchCriteria> criteriaList) {
         List<Specification<Recipe>> specifications = criteriaList.stream()
-                .map(RecipeSpecification::new).collect(Collectors.toList());
+                .map(RecipeSpecification::new)
+                .collect(Collectors.toList());
 
-        Specification<Recipe> finalSpecification = specifications.get(0);
-        for (int i = 1; i < specifications.size(); i++) {
-            finalSpecification = Specification.where(finalSpecification).and(specifications.get(i));
-        }
+        Specification<Recipe> finalSpecification = specifications.stream()
+                .reduce(Specification::and)
+                .orElseThrow(() -> new InvalidPayloadException("Invalid Specification For search "));
 
-        List<Recipe> recipeList = recipeRepository.findAll(finalSpecification);
-        return recipeList.stream()
+        List<RecipeDto> recipeDtoList = recipeRepository.findAll(finalSpecification).stream()
                 .map(recipeMapper::recipeToRecipeDto)
                 .collect(Collectors.toList());
 
+        return recipeDtoList;
+
 
     }
+
 
 
 
