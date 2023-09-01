@@ -11,7 +11,6 @@ import org.abn.recipe.recipemanagement.util.ApiConstant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,8 +22,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -58,7 +55,6 @@ public class ITRecipeApiTest extends BaseIntegrationTest{
         recipeRepository.deleteAll();
 
         List<String> ingredients1 = List.of("ingredient1", "ingredient2");
-        List<String> ingredients2 = List.of("ingredient3", "ingredient4");
         recipeDto = RecipeDto.builder()
                 .name("Test Recipe").vegetarian(true)
                 .servings(4).ingredients(ingredients1).instructions("Instructions1").build();

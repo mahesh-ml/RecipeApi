@@ -24,6 +24,7 @@ public class RecipeServiceImpl implements IRecipeService {
     private final RecipeMapper recipeMapper;
     private final RecipeRepository recipeRepository;
 
+    @Override
     public List<RecipeDto> getAllRecipes() {
         List<Recipe> recipes = recipeRepository.findAll();
         return recipes.stream()
@@ -31,16 +32,19 @@ public class RecipeServiceImpl implements IRecipeService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public Optional<RecipeDto> getRecipeById(Long id) {
        return recipeRepository.findById(id).map(recipeMapper::recipeToRecipeDto);
     }
 
+    @Override
     public RecipeDto createRecipe(RecipeDto recipeDto) {
         Recipe recipe = recipeMapper.recipeDtoToRecipe(recipeDto);
         Recipe savedRecipe = recipeRepository.save(recipe);
         return recipeMapper.recipeToRecipeDto(savedRecipe);
     }
 
+    @Override
     public RecipeDto updateRecipe(Long id, RecipeDto recipeDto) {
         Recipe recipe = recipeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Recipe" , "recipeId" , id));
@@ -53,10 +57,11 @@ public class RecipeServiceImpl implements IRecipeService {
         return recipeMapper.recipeToRecipeDto(updatedRecipe);
     }
 
+    @Override
     public String deleteRecipe(Long id) {
         Recipe recipe = recipeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Recipe" , "recipeId" , id));
-        recipeRepository.deleteById(id);
+        recipeRepository.deleteById(recipe.getRecipeId());
         return "Recipe with Id " + id + " Deleted";
     }
 
@@ -70,11 +75,9 @@ public class RecipeServiceImpl implements IRecipeService {
                 .reduce(Specification::and)
                 .orElseThrow(() -> new InvalidPayloadException("Invalid Specification For search "));
 
-        List<RecipeDto> recipeDtoList = recipeRepository.findAll(finalSpecification).stream()
+        return recipeRepository.findAll(finalSpecification).stream()
                 .map(recipeMapper::recipeToRecipeDto)
                 .collect(Collectors.toList());
-
-        return recipeDtoList;
 
 
     }

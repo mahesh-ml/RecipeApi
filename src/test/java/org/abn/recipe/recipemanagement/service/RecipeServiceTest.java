@@ -29,8 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class RecipeServiceTest {
@@ -174,14 +173,17 @@ public class RecipeServiceTest {
     @DisplayName("Service Class Test -> Delete By Id Success ")
     void givenRecipeId_whenDeleteById_thenRecipeDeleted() {
 
-        when(recipeRepository.findById(recipeId)).thenReturn(Optional.of(recipeWithId));
+        Long recipeId = 1L;
+        Recipe recipe = new Recipe();
+        recipe.setRecipeId(recipeId);
+
+        when(recipeRepository.findById(recipeId)).thenReturn(Optional.of(recipe));
 
         String result = classUnderTest.deleteRecipe(recipeId);
 
-        assertThat(result).isEqualTo("Recipe with Id " + recipeId +" Deleted");
-        verify(recipeRepository).deleteById(recipeId);
+        verify(recipeRepository, times(1)).deleteById(recipeId);
+        assertEquals("Recipe with Id " + recipeId + " Deleted", result);
     }
-
 
     @Test
     @DisplayName("Service Class Test -> Search By Single Criteria")

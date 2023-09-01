@@ -14,7 +14,7 @@ public class ApiConfig {
                 .info(new Info()
                         .title("Recipe Management Api")
                         .version("1.0.0")
-                        .description("API Recipe Management"));
+                        .description("Recipe Management Api"));
     }
 
     @Bean

@@ -12,11 +12,15 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ActiveProfiles("integration")
 public class BaseIntegrationTest {
     @Container
-    final static PostgreSQLContainer postgresqlContainer = new PostgreSQLContainer(
-            ApiConstant.POSTGRESQL_TC_DOCKER_IMAGE.getValue())
-            .withDatabaseName(ApiConstant.POSTGRESQL_TC_DBNAME.getValue())
-            .withUsername(ApiConstant.POSTGRESQL_TC_USERNAME.getValue())
-            .withPassword(ApiConstant.POSTGRESQL_TC_PWD.getValue());
+    final static PostgreSQLContainer postgresqlContainer;
+
+    static {
+        postgresqlContainer = new PostgreSQLContainer(
+                ApiConstant.POSTGRESQL_TC_DOCKER_IMAGE.getValue())
+                .withDatabaseName(ApiConstant.POSTGRESQL_TC_DBNAME.getValue())
+                .withUsername(ApiConstant.POSTGRESQL_TC_USERNAME.getValue())
+                .withPassword(ApiConstant.POSTGRESQL_TC_PWD.getValue());
+    }
 
 
     @DynamicPropertySource
