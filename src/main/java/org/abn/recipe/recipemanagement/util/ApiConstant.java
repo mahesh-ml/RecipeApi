@@ -10,6 +10,7 @@ public enum ApiConstant {
     INVALID_PAYLOAD_ERROR_MESSAGE("Error in Processing update Request Payload "),
     API_BASE_URL("/recipes"),
     API_BASE_URL_WITH_ID("/recipes/{recipeId}"),
+    API_SEARCH_URL("/recipes/search"),
     POSTGRESQL_TC_DOCKER_IMAGE("postgres:11.1"),
     POSTGRESQL_TC_DBNAME("test"),
     POSTGRESQL_TC_USERNAME("sa"),

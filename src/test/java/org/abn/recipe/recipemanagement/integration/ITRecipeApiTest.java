@@ -5,10 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.abn.recipe.recipemanagement.entity.Recipe;
 import org.abn.recipe.recipemanagement.payload.RecipeDto;
 import org.abn.recipe.recipemanagement.repository.RecipeRepository;
+import org.abn.recipe.recipemanagement.search.SearchCriteria;
+import org.abn.recipe.recipemanagement.search.SearchOperation;
 import org.abn.recipe.recipemanagement.util.ApiConstant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,6 +23,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -163,7 +168,26 @@ public class ITRecipeApiTest extends BaseIntegrationTest{
                 .andExpect(jsonPath("$.instructions").value(recipeDto.getInstructions()));
     }
 
+   @Test
+   @DisplayName("Integration Test -> Search By Multi Criteria")
+    void givenCriteria_whenSearch_ThenReturnResult() throws Exception {
+        List<SearchCriteria> criteriaList = List.of(
+                new SearchCriteria("servings", SearchOperation.EQUAL, 4)
+        );
 
+        recipeRepository.save(recipe1);
+
+        mockMvc.perform(post(ApiConstant.API_SEARCH_URL.getValue())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(criteriaList)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$[0].name", is(recipeDto.getName())))
+                .andExpect(jsonPath("$[0].servings").value(recipeDto.getServings()))
+                .andExpect(jsonPath("$[0].instructions").value(recipeDto.getInstructions()));
+
+
+    }
     String jsonString(Object object) throws JsonProcessingException {
         return objectMapper.writeValueAsString(object);
 

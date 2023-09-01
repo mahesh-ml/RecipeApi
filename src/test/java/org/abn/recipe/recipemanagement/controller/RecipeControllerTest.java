@@ -3,6 +3,8 @@ package org.abn.recipe.recipemanagement.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.abn.recipe.recipemanagement.payload.RecipeDto;
+import org.abn.recipe.recipemanagement.search.SearchCriteria;
+import org.abn.recipe.recipemanagement.search.SearchOperation;
 import org.abn.recipe.recipemanagement.service.IRecipeService;
 import org.abn.recipe.recipemanagement.util.ApiConstant;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +25,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -56,7 +60,7 @@ public class RecipeControllerTest {
     }
 
     @Test
-    @DisplayName("Test find all recipe")
+    @DisplayName("Controller Test -> find all recipe")
     public void givenRecipeList_whenFindAll_thenReturnAllRecipes() throws Exception {
         //given precondition or setup
         given(recipeService.getAllRecipes()).willReturn(List.of(recipeDto1,recipeDto2));
@@ -72,7 +76,7 @@ public class RecipeControllerTest {
     }
 
     @Test
-    @DisplayName("Test find recipe by Id")
+    @DisplayName("Controller Test -> find recipe by Id")
     public void givenRecipeId_whenGetByRecipeId_thenReturnRecipe() throws Exception {
         //given precondition or setup
         Long id = 1L;
@@ -93,20 +97,20 @@ public class RecipeControllerTest {
     }
 
     @Test
-    @DisplayName("Test find Recipe By Recipe Id - Not Found")
+    @DisplayName("Controller Test -> find Recipe By Recipe Id - Not Found")
     public void givenInValidRecipeId_whenGetByRecipeId_thenReturnNotFound() throws Exception {
         Long recipeId = 111L;
-        Mockito.when(recipeService.getRecipeById(recipeId)).thenReturn(Optional.empty());
+        when(recipeService.getRecipeById(recipeId)).thenReturn(Optional.empty());
 
         mockMvc.perform(get(ApiConstant.API_BASE_URL_WITH_ID.getValue(), recipeId))
                 .andDo(print())
                 .andExpect(status().isNotFound());
 
-        Mockito.verify(recipeService, Mockito.times(1)).getRecipeById(recipeId);
+        Mockito.verify(recipeService, times(1)).getRecipeById(recipeId);
     }
 
     @Test
-    @DisplayName("Test Delete recipe By Id ")
+    @DisplayName("Controller Test -> Delete recipe By Id ")
     public void givenRecipeId_whenDeleteRecipe_thenRecipeDeleted() throws Exception {
         //given precondition or setup
         Long recipeId = 11L;
@@ -122,12 +126,12 @@ public class RecipeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is(expectedResponse)));
 
-        Mockito.verify(recipeService, Mockito.times(1)).deleteRecipe(recipeId);
+        Mockito.verify(recipeService, times(1)).deleteRecipe(recipeId);
 
     }
 
     @Test
-    @DisplayName("Test update Recipe")
+    @DisplayName("Controller Test -> update Recipe")
     void givenRecipeAndId_whenUpdateRecipe_thenRecipeUpdated() throws Exception {
         Long recipeId = 1L;
 
@@ -144,7 +148,7 @@ public class RecipeControllerTest {
     }
 
     @Test
-    @DisplayName("Test create recipe ")
+    @DisplayName("Controller Test -> create recipe ")
     public void givenRecipe_whenCreateRecipe_thenReturnRecipeCreated() throws Exception {
 
         //given precondition or setup
@@ -159,6 +163,30 @@ public class RecipeControllerTest {
                 .andExpect(jsonPath("$.name", is(recipeDto2.getName())))
                 .andExpect(jsonPath("$.servings").value(recipeDto2.getServings()))
                 .andExpect(jsonPath("$.instructions").value(recipeDto2.getInstructions()));
+    }
+
+
+    @Test
+    @DisplayName("Controller Test -> Search By Multi Criteria")
+    void givenMultipleCriteria_whenSearch_ThenReturnResult() throws Exception {
+        List<SearchCriteria> criteriaList = List.of(
+                new SearchCriteria("name", SearchOperation.EQUAL, "Recipe 1"),
+                new SearchCriteria("servings", SearchOperation.EQUAL, 4)
+        );
+
+        when(recipeService.search(criteriaList)).thenReturn(List.of(recipeDto2));
+
+        mockMvc.perform(post(ApiConstant.API_SEARCH_URL.getValue())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(criteriaList)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$[0].name", is(recipeDto2.getName())))
+                .andExpect(jsonPath("$[0].servings").value(recipeDto2.getServings()))
+                .andExpect(jsonPath("$[0].instructions").value(recipeDto2.getInstructions()));
+
+
+        Mockito.verify(recipeService, times(1)).search(criteriaList); // Verify that the search method was called
     }
 
      String jsonString(Object object) throws JsonProcessingException {
