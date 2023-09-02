@@ -1,16 +1,9 @@
 **Recipe Management API**
-allows users to manage their favourite recipes. It  allows adding, updating, removing and fetching recipes.
 
-Additionally users should be able to filter available recipes based on one or more of the following criteria:
+   The API allows users to manage their favourite recipes. It  allows adding, updating, removing and fetching recipes.
+   Additionally users should be able to filter available recipes based on different  criterias:
+   It also supports Text search within the instructions.
 
-1. Whether or not the dish is vegetarian
-2. The number of servings
-3. Specific ingredients (either include or exclude)
-4. Text search within the instructions.
-   For example, the API should be able to handle the following search requests:
-   • All vegetarian recipes
-   • Recipes that can serve 4 persons and have “potatoes” as an ingredient
-   • Recipes without “salmon” as an ingredient that has “oven” in the instructions.
 
 
 **Tech Stack**
@@ -23,79 +16,102 @@ Additionally users should be able to filter available recipes based on one or mo
 
 **Endpoints**
 
-Create Recipe
+         **GET /receipes Get all recipes**
 
-    URL: /recipes
-    
-    Method: POST
-    Request Body: RecipeDto
-    Response Body: RecipeDto
-    Response Status: 201 CREATED
-
-Get All Recipes
-
-    URL: /recipes
-    
-    Method: GET
-    Response Body: List<RecipeDto>
-    Response Status: 200 OK
-
-Get Recipe by ID
-
-    URL: /recipes/{recipeId}
-    Method: GET
-    Path Variable: recipeId
-    Response Body: RecipeDto
-    Response Status: 200 OK
-    Error Response Status: 404 NOT FOUND
-
-Update Recipe
-
-    URL: /recipes/{recipeId}
-    Method: PUT
-    Path Variable: recipeId
-    Request Body: RecipeDto
-    Response Body: RecipeDto
-    Response Status: 200 OK
-    Error Response Status: 404 NOT FOUND
-
-Delete Recipe
-
-    URL: /recipes/{recipeId}
-    
-    Method: DELETE
-    Path Variable: recipeId
-    Response Body: String
-    Response Status: 200 OK
-    Error Response Status: 404 NOT FOUND
-
-Search Recipes
-
-    URL: /recipes/search
-
-    Method: POST
-    Request Body: List<SearchCriteria>
-    Response Body: List<RecipeDto>
-    Response Status: 200 OK
+         Summary: Get a list of all recipes.
+         Response:
+         Status code: 200
+         Description: List of all recipes
+         Content: application/json
+         Schema: RecipeDto
 
 
-Search Recipes
+         **POST /receipes: Create a new recipe**
 
-    URL: /recipes/search/instructions
+         Summary: Create a new recipe.
+         Request body: RecipeDto
+         Response:
+         Status code: 201
+         Description: Recipe created successfully
 
-    Method: GET
-    Request Param : String searchQuery
-    Response Body: List<RecipeDto>
-    Response Status: 200 OK
+   
+         **GET /recipes/{recipeId}: Get a recipe by ID**
+   
+         Summary: Get a recipe by ID.
+         Path parameter: recipeId
+         Response:
+         Status code: 200
+         Description: Recipe found
+         Content: application/json
+         Schema: RecipeDto
+         Status code: 404
+         Description: Recipe not found
+   
+         **PUT /recipes/{recipeId}: Update a recipe by ID**
+   
+         Summary: Update a recipe by ID.
+         Path parameter: recipeId
+         Request body: RecipeDto
+         Response:
+         Status code: 200
+         Description: Recipe updated successfully
+         Content: application/json
+         Schema: RecipeDto
+         Status code: 404
+         Description: Recipe not found
+   
+   
+         **DELETE /recipes/{recipeId}: Delete a recipe by ID**
+   
+         Summary: Delete a recipe by ID.
+         Path parameter: recipeId
+         Response:
+         Status code: 200
+         Description: Recipe deleted successfully
+         Status code: 404
+         Description: Recipe not found
+   
+   
+         
+         **POST /recipes/search: Search recipes by criteria**
+   
+         Summary: Search recipes by criteria.
+         Request body: List<SearchCriteria>
+         Response:
+         Status code: 200
+         Description: List of recipes matching the criteria
+         Content: application/json
+         Schema: RecipeDto
+   
+   
+         **GET /search/instructions: Search recipes with in instructions**
+   
+         Summary: Search recipes within instructions.
+         Query parameter: q
+         Response:
+         Status code: 200
+         Description: List of recipes matching the criteria
+         Content: application/json
+         Schema: RecipeDto
 
-**How to Run the Application**
+**How to Run the Application Locally**
 
-Clone the repository.
-Open the project in an IDE.
-Build the project using Maven.
-Run the RecipeApplication class.
+*    Clone the repository from github URL https://github.com/mahesh-ml/RecipeApi/.
+*    Import the project to  Intellij or Eclipse or any java based IDE.
+*    Build the project using Maven by running **mvn clean install.**
+*    Run the RecipeApplication by running **mvn spring-boot:run**
+*    Please note that project needs following environment/tools - Java 17.
+*    Since all the integration tests are run via postgres database from test container image,  Docker must be installed in the machine.
 
 The application will start running on http://localhost:6060.
+The default port can be changed from application.properties.
+
+OpenAPI Link ->
+      http://localhost:6060/swagger-ui/index.html
 
 
+Improvements - 
 
+*    Deployment related details are not implemented yet such as docker-compose and k8s related files. 
+*    Security for role based access can be implemented .
+*    Search can be more extensive.

@@ -38,8 +38,7 @@ public class RecipeController {
 
     @Operation(summary = "Create a new recipe")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Recipe created successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid request body")
+            @ApiResponse(responseCode = "201", description = "Recipe created successfully")
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
