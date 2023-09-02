@@ -229,10 +229,9 @@ public class RecipeServiceTest {
     void givenSearchParam_whenSearchWIthinInstructions_ThenReturnResult() {
 
         String searchQuery = "boil";
-        List<String> fields = Arrays.asList("instructions");
-        int limit = 10;
-        List<Recipe> recipes = Arrays.asList(new Recipe(), new Recipe());
-        List<RecipeDto> expected = Arrays.asList(new RecipeDto(), new RecipeDto());
+
+        List<Recipe> recipes = List.of(new Recipe(), new Recipe());
+        List<RecipeDto> expected = List.of(new RecipeDto(), new RecipeDto());
 
         when(recipeRepository.findByInstructionsContaining(searchQuery)).thenReturn(recipes);
         when(recipeMapper.recipeToRecipeDto(any(Recipe.class))).thenReturn(new RecipeDto());

@@ -64,7 +64,7 @@ public class RecipeServiceImpl implements IRecipeService {
         Recipe recipe = recipeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Recipe" , "recipeId" , id));
         recipeRepository.deleteById(recipe.getRecipeId());
-        return "Recipe with Id " + id + " Deleted";
+        return String.format("Recipe with Id %d Deleted",id);
     }
 
     @Override
