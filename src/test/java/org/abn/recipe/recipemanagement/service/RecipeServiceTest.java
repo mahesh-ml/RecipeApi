@@ -224,5 +224,26 @@ public class RecipeServiceTest {
 
     }
 
+    @Test
+    @DisplayName("Service Class Test -> Search within Instructions")
+    void givenSearchParam_whenSearchWIthinInstructions_ThenReturnResult() {
+
+        String searchQuery = "boil";
+        List<String> fields = Arrays.asList("instructions");
+        int limit = 10;
+        List<Recipe> recipes = Arrays.asList(new Recipe(), new Recipe());
+        List<RecipeDto> expected = Arrays.asList(new RecipeDto(), new RecipeDto());
+
+        when(recipeRepository.findByInstructionsContaining(searchQuery)).thenReturn(recipes);
+        when(recipeMapper.recipeToRecipeDto(any(Recipe.class))).thenReturn(new RecipeDto());
+
+
+        List<RecipeDto> actual = classUnderTest.searchWithInInstructions(searchQuery);
+
+
+        assertEquals(expected.size(), actual.size());
+        assertEquals(actual, expected);
+    }
+
 
 }

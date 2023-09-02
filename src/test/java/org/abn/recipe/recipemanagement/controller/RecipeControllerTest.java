@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +41,7 @@ public class RecipeControllerTest {
 
     @MockBean
     IRecipeService recipeService;
+
 
     @Autowired
     ObjectMapper objectMapper;
@@ -187,6 +189,39 @@ public class RecipeControllerTest {
 
 
         Mockito.verify(recipeService, times(1)).search(criteriaList); // Verify that the search method was called
+    }
+
+    @Test
+    @DisplayName("Service Class Test -> Search within Instructions")
+    void givenSearchParam_whenSearchWIthinInstructions_ThenReturnResult() throws Exception {
+
+        String searchQuery = "boil";
+        when(recipeService.searchWithInInstructions(searchQuery)).thenReturn(List.of(recipeDto2));
+
+        mockMvc.perform(get(ApiConstant.API_SEARCH_WITHIN_INSTRUCTIONS.getValue())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .queryParam("q",searchQuery))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$[0].name", is(recipeDto2.getName())))
+                .andExpect(jsonPath("$[0].servings").value(recipeDto2.getServings()))
+                .andExpect(jsonPath("$[0].instructions").value(recipeDto2.getInstructions()));
+
+    }
+
+    @Test
+    @DisplayName("Service Class Test -> Search within Instructions")
+    void givenNoParam_whenSearchWIthinInstructions_ThenEmpty() throws Exception {
+
+        String searchQuery = "xyz";
+        when(recipeService.searchWithInInstructions(searchQuery)).thenReturn(Collections.emptyList());
+
+        mockMvc.perform(get(ApiConstant.API_SEARCH_WITHIN_INSTRUCTIONS.getValue())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .queryParam("q",searchQuery))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.size()", is(0)));
     }
 
      String jsonString(Object object) throws JsonProcessingException {

@@ -24,6 +24,8 @@ public class RecipeServiceImpl implements IRecipeService {
     private final RecipeMapper recipeMapper;
     private final RecipeRepository recipeRepository;
 
+
+
     @Override
     public List<RecipeDto> getAllRecipes() {
         List<Recipe> recipes = recipeRepository.findAll();
@@ -82,9 +84,12 @@ public class RecipeServiceImpl implements IRecipeService {
 
     }
 
-
-
-
+    @Override
+    public List<RecipeDto> searchWithInInstructions(String searchQuery) {
+       return recipeRepository.findByInstructionsContaining(searchQuery).stream()
+               .map(recipeMapper::recipeToRecipeDto)
+               .collect(Collectors.toList());
+    }
 
 
 }

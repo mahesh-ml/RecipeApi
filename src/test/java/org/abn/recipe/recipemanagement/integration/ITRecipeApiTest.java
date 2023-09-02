@@ -30,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @AutoConfigureMockMvc
-
 public class ITRecipeApiTest extends BaseIntegrationTest{
 
 
@@ -149,7 +148,6 @@ public class ITRecipeApiTest extends BaseIntegrationTest{
     @Test
     @DisplayName("Integration Test -> create recipe ")
     public void givenRecipe_whenCreateRecipe_thenReturnRecipeCreated() throws Exception {
-
         //given precondition or setup
         recipeRepository.save(recipe1);
 
@@ -184,6 +182,53 @@ public class ITRecipeApiTest extends BaseIntegrationTest{
 
 
     }
+    @Test
+    @DisplayName("Integration Test -> Search within Instructions")
+    void givenSearchParam_whenSearchWIthinInstructions_ThenReturnResult() throws Exception {
+
+        String searchQuery = "boil";
+        Recipe recipeForSearch = new Recipe( "Test Recipe1", true,4,
+                List.of("ingredient1", "ingredient2"),
+                "boil water and place in oven");
+
+
+        recipeRepository.save(recipeForSearch);
+
+
+        RecipeDto recipeSearchDto = RecipeDto.builder()
+                .name("Test Recipe1").vegetarian(true)
+                .servings(4).ingredients(List.of("ingredient1", "ingredient2")).instructions("boil water and place in oven").build();
+
+        mockMvc.perform(get(ApiConstant.API_SEARCH_WITHIN_INSTRUCTIONS.getValue())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .queryParam("q",searchQuery))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$[0].name", is(recipeSearchDto.getName())))
+                .andExpect(jsonPath("$[0].servings").value(recipeSearchDto.getServings()))
+                .andExpect(jsonPath("$[0].instructions").value(recipeSearchDto.getInstructions()));
+
+    }
+
+    @Test
+    @DisplayName("Integration Test -> Search within Instructions Empty")
+    void givenSearchParam_whenSearchWIthinInstructions_ThenReturnEmpty() throws Exception {
+
+        String searchQuery = "xyz";
+        Recipe recipeForSearch = new Recipe( "Test Recipe1", true,4,
+                List.of("ingredient1", "ingredient2"),
+                "boil water and place in oven");
+        recipeRepository.save(recipeForSearch);
+
+        mockMvc.perform(get(ApiConstant.API_SEARCH_WITHIN_INSTRUCTIONS.getValue())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .queryParam("q",searchQuery))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.size()", is(0)));
+
+    }
+
     String jsonString(Object object) throws JsonProcessingException {
         return objectMapper.writeValueAsString(object);
 

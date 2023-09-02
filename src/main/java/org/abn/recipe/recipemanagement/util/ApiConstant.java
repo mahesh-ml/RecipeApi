@@ -11,6 +11,7 @@ public enum ApiConstant {
     API_BASE_URL("/recipes"),
     API_BASE_URL_WITH_ID("/recipes/{recipeId}"),
     API_SEARCH_URL("/recipes/search"),
+    API_SEARCH_WITHIN_INSTRUCTIONS("/recipes/search/instructions"),
     POSTGRESQL_TC_DOCKER_IMAGE("postgres:11.1"),
     POSTGRESQL_TC_DBNAME("test"),
     POSTGRESQL_TC_USERNAME("sa"),

@@ -94,4 +94,15 @@ public class RecipeController {
         return recipeService.search(criteriaList);
     }
 
+
+    @Operation(summary = "Search recipes with in instructions")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of recipes matching the criteria", content = {
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RecipeDto.class)))
+            })
+    })
+    @GetMapping ("/search/instructions")
+    public List<RecipeDto> searchRecipeByInstructions(@RequestParam("q") String searchQuery){
+        return recipeService.searchWithInInstructions(searchQuery);
+    }
 }

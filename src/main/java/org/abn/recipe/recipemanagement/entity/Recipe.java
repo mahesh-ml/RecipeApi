@@ -2,17 +2,19 @@ package org.abn.recipe.recipemanagement.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
 import java.util.List;
 
+@Indexed
 @Entity
-@AllArgsConstructor
+@Table(name = "recipe")
+@Data
 @NoArgsConstructor
-@Setter
-@Getter
+@AllArgsConstructor
 public class Recipe {
 
     @Id
@@ -21,8 +23,10 @@ public class Recipe {
     private String name;
     private boolean vegetarian;
     private int servings;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> ingredients;
+
+    @FullTextField
     private String instructions;
 
     public Recipe(String name, boolean vegetarian, int servings, List<String> ingredients, String instructions) {
