@@ -21,6 +21,5 @@ public enum ApiConstant {
     SPRING_DATASOURCE_TC_PWD_PROP_KEY("spring.datasource.password");
 
 
-
     final String value;
 }

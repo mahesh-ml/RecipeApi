@@ -1,10 +1,8 @@
 **Recipe Management API**
 
-   The API allows users to manage their favourite recipes. It  allows adding, updating, removing and fetching recipes.
-   Additionally users should be able to filter available recipes based on different  criterias:
-   It also supports Text search within the instructions.
-
-
+The API allows users to manage their favourite recipes. It allows adding, updating, removing and fetching recipes.
+Additionally users should be able to filter available recipes based on different criterias.
+It also supports Text search within the instructions.
 
 **Tech Stack**
 
@@ -15,6 +13,8 @@
     Postgres docker image
 
 **Endpoints**
+
+The postman collections can be found in /src/main/resources/RecipeApi.postman_collection.json
 
          **GET /receipes Get all recipes**
 
@@ -96,22 +96,22 @@
 
 **How to Run the Application Locally**
 
-*    Clone the repository from github URL https://github.com/mahesh-ml/RecipeApi/.
-*    Import the project to  Intellij or Eclipse or any java based IDE.
-*    Build the project using Maven by running **mvn clean install.**
-*    Run the RecipeApplication by running **mvn spring-boot:run**
-*    Please note that project needs following environment/tools - Java 17.
-*    Since all the integration tests are run via postgres database from test container image,  Docker must be installed in the machine.
+* Clone the repository from github URL https://github.com/mahesh-ml/RecipeApi/.
+* Import the project to Intellij or Eclipse or any java based IDE.
+* Build the project using Maven by running **mvn clean install.**
+* Run the RecipeApplication by running **mvn spring-boot:run**
+* Please note that project needs following environment/tools - Java 17.
+* Since all the integration tests are run via postgres database from test container image, Docker must be installed in
+  the machine.
 
 The application will start running on http://localhost:6060.
 The default port can be changed from application.properties.
 
 OpenAPI Link ->
-      http://localhost:6060/swagger-ui/index.html
+http://localhost:6060/swagger-ui/index.html
 
+Improvements -
 
-Improvements - 
-
-*    Deployment related details are not implemented yet such as docker-compose and k8s related files. 
-*    Security for role based access can be implemented .
-*    Search can be more extensive.
+* Deployment related details are not implemented yet such as docker-compose and k8s related files.
+* Security for role based access can be implemented .
+* Search can be more extensive.

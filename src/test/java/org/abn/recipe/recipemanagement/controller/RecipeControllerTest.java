@@ -47,6 +47,7 @@ public class RecipeControllerTest {
     ObjectMapper objectMapper;
     RecipeDto recipeDto1;
     RecipeDto recipeDto2;
+
     @BeforeEach
     public void init() {
         List<String> ingredients1 = List.of("ingredient1", "ingredient2");
@@ -65,7 +66,7 @@ public class RecipeControllerTest {
     @DisplayName("Controller Test -> find all recipe")
     public void givenRecipeList_whenFindAll_thenReturnAllRecipes() throws Exception {
         //given precondition or setup
-        given(recipeService.getAllRecipes()).willReturn(List.of(recipeDto1,recipeDto2));
+        given(recipeService.getAllRecipes()).willReturn(List.of(recipeDto1, recipeDto2));
 
         //when - action or behaviour that we are testing
         ResultActions result = mockMvc.perform(get(ApiConstant.API_BASE_URL.getValue()));
@@ -116,7 +117,7 @@ public class RecipeControllerTest {
     public void givenRecipeId_whenDeleteRecipe_thenRecipeDeleted() throws Exception {
         //given precondition or setup
         Long recipeId = 11L;
-        String expectedResponse ="Deleted Recipe with id " + recipeId;
+        String expectedResponse = "Deleted Recipe with id " + recipeId;
 
         given(recipeService.deleteRecipe(recipeId)).willReturn(expectedResponse);
 
@@ -200,7 +201,7 @@ public class RecipeControllerTest {
 
         mockMvc.perform(get(ApiConstant.API_SEARCH_WITHIN_INSTRUCTIONS.getValue())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .queryParam("q",searchQuery))
+                        .queryParam("q", searchQuery))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("$[0].name", is(recipeDto2.getName())))
@@ -218,13 +219,13 @@ public class RecipeControllerTest {
 
         mockMvc.perform(get(ApiConstant.API_SEARCH_WITHIN_INSTRUCTIONS.getValue())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .queryParam("q",searchQuery))
+                        .queryParam("q", searchQuery))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("$.size()", is(0)));
     }
 
-     String jsonString(Object object) throws JsonProcessingException {
+    String jsonString(Object object) throws JsonProcessingException {
         return objectMapper.writeValueAsString(object);
 
     }

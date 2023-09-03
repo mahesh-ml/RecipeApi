@@ -27,7 +27,7 @@ public class ITRecipeRepositoryTest extends BaseIntegrationTest {
     public void init() {
 
         recipeRepository.deleteAll();
-        recipe = new Recipe( "Test Recipe", true,4, List.of("ingredient1", "ingredient2"),
+        recipe = new Recipe("Test Recipe", true, 4, List.of("ingredient1", "ingredient2"),
                 "Instructions1");
 
     }

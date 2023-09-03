@@ -36,18 +36,15 @@ public class RecipeServiceTest {
 
     @Mock
     RecipeRepository recipeRepository;
-    @Mock
-    private RecipeMapper recipeMapper;
     @InjectMocks
     RecipeServiceImpl classUnderTest;
-
     RecipeDto recipeDto1;
     RecipeDto recipeDto2;
     Recipe recipe;
-
     Recipe recipeWithId;
     Long recipeId;
-
+    @Mock
+    private RecipeMapper recipeMapper;
 
     @BeforeEach
     public void init() {
@@ -62,10 +59,10 @@ public class RecipeServiceTest {
                 .name("Recipe 2").vegetarian(false)
                 .servings(2).ingredients(ingredients2).instructions("Instruction2").build();
 
-        recipe = new Recipe( "Test Recipe", true,4, List.of("ingredient1", "ingredient2"),
+        recipe = new Recipe("Test Recipe", true, 4, List.of("ingredient1", "ingredient2"),
                 "Instructions1");
 
-        recipeWithId =    new Recipe(1L, "Test Recipe", true,4, List.of("ingredient1", "ingredient2"),
+        recipeWithId = new Recipe(1L, "Test Recipe", true, 4, List.of("ingredient1", "ingredient2"),
                 "Instructions1");
 
     }
@@ -90,15 +87,15 @@ public class RecipeServiceTest {
     void givenRecipe_whenFindAllRecipe_thenListAllRecipes() {
         List<Recipe> recipes = Arrays.asList(
                 recipe,
-                new Recipe( "Test Recipe1", false,2, List.of("ingredient3", "ingredient4"),
+                new Recipe("Test Recipe1", false, 2, List.of("ingredient3", "ingredient4"),
                         "Instructions2")
         );
-        List<RecipeDto> expectedDtos = List.of(recipeDto1,recipeDto2);
+        List<RecipeDto> expectedDtos = List.of(recipeDto1, recipeDto2);
 
         when(recipeRepository.findAll()).thenReturn(recipes);
         when(recipeMapper.recipeToRecipeDto(any(Recipe.class))).thenAnswer(invocation -> {
             Recipe recipe = invocation.getArgument(0);
-            return  RecipeDto.builder()
+            return RecipeDto.builder()
                     .name(recipe.getName()).vegetarian(recipe.isVegetarian())
                     .servings(recipe.getServings()).ingredients(recipe.getIngredients()).instructions(recipe.getInstructions()).build();
         });
@@ -169,6 +166,7 @@ public class RecipeServiceTest {
 
         assertThat(foundDto).isEmpty();
     }
+
     @Test
     @DisplayName("Service Class Test -> Delete By Id Success ")
     void givenRecipeId_whenDeleteById_thenRecipeDeleted() {

@@ -1,0 +1,109 @@
+{
+	"info": {
+		"_postman_id": "70ff65f2-2e44-406c-a105-672712c8d2d8",
+		"name": "RecipeApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20769457"
+	},
+	"item": [
+		{
+			"name": "Get All recipes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:6060/recipes"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Recipe",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"name\": \"Egg Biryani\",\n        \"vegetarian\": false,\n        \"servings\": 3,\n        \"ingredients\": [\n            \"Egg\",\n            \"rice\"\n        ],\n        \"instructions\": \"Cook in bolied water and serve\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:6060/recipes"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Recipe",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "   {\n        \"name\": \"Biryani\",\n        \"vegetarian\": false,\n        \"servings\": 4,\n        \"ingredients\": [\n            \"chicken\",\n            \"rice\"\n        ],\n        \"instructions\": \"Cook in bolied water and serve\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:6060/recipes/1"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Recipe",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:6060/recipes/1"
+			},
+			"response": []
+		},
+		{
+			"name": "Search/Filter",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "     [  {\n        \"searchKey\": \"name\",\n        \"operation\": \"LIKE\",\n        \"value\": \"Biryani\"\n    },\n    {\n        \"searchKey\": \"vegetarian\",\n        \"operation\": \"EQUAL\",\n        \"value\": false\n    },\n    {\n        \"searchKey\": \"servings\",\n        \"operation\": \"GREATER_THAN\",\n        \"value\": 1\n    }]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:6060/recipes/search"
+			},
+			"response": []
+		},
+		{
+			"name": "Search Instructions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6060/recipes/search/instructions?q=water",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6060",
+					"path": [
+						"recipes",
+						"search",
+						"instructions"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "water"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

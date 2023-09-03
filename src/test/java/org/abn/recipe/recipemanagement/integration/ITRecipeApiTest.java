@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @AutoConfigureMockMvc
-public class ITRecipeApiTest extends BaseIntegrationTest{
+public class ITRecipeApiTest extends BaseIntegrationTest {
 
 
     @Autowired
@@ -58,10 +58,10 @@ public class ITRecipeApiTest extends BaseIntegrationTest{
                 .name("Test Recipe").vegetarian(true)
                 .servings(4).ingredients(ingredients1).instructions("Instructions1").build();
 
-        recipe1 = new Recipe( "Test Recipe", true,4, List.of("ingredient1", "ingredient2"),
+        recipe1 = new Recipe("Test Recipe", true, 4, List.of("ingredient1", "ingredient2"),
                 "Instructions1");
 
-        recipe2 =    new Recipe( "Test Recipe1", false,4, List.of("ingredient3", "ingredient4"),
+        recipe2 = new Recipe("Test Recipe1", false, 4, List.of("ingredient3", "ingredient4"),
                 "Instructions2");
 
     }
@@ -101,6 +101,7 @@ public class ITRecipeApiTest extends BaseIntegrationTest{
                 .andExpect(jsonPath("$.instructions").value(recipeDto.getInstructions()));
 
     }
+
     @Test
     @DisplayName("Integration Test -> find Recipe By Recipe Id - Not Found")
     public void givenInValidRecipeId_whenGetByRecipeId_thenReturnNotFound() throws Exception {
@@ -111,13 +112,14 @@ public class ITRecipeApiTest extends BaseIntegrationTest{
                 .andExpect(status().isNotFound());
 
     }
+
     @Test
     @DisplayName("Integration Test -> Delete recipe By Id ")
     public void givenRecipeId_whenDeleteRecipe_thenRecipeDeleted() throws Exception {
         //given precondition or setup
         recipeRepository.save(recipe1);
 
-        String expectedResponse ="Recipe with Id " + recipe1.getRecipeId() + " Deleted";
+        String expectedResponse = "Recipe with Id " + recipe1.getRecipeId() + " Deleted";
 
 
         //when - action or behaviour that we are testing
@@ -162,8 +164,8 @@ public class ITRecipeApiTest extends BaseIntegrationTest{
                 .andExpect(jsonPath("$.instructions").value(recipeDto.getInstructions()));
     }
 
-   @Test
-   @DisplayName("Integration Test -> Search By Multi Criteria")
+    @Test
+    @DisplayName("Integration Test -> Search By Multi Criteria")
     void givenCriteria_whenSearch_ThenReturnResult() throws Exception {
         List<SearchCriteria> criteriaList = List.of(
                 new SearchCriteria("servings", SearchOperation.EQUAL, 4)
@@ -182,12 +184,13 @@ public class ITRecipeApiTest extends BaseIntegrationTest{
 
 
     }
+
     @Test
     @DisplayName("Integration Test -> Search within Instructions")
     void givenSearchParam_whenSearchWIthinInstructions_ThenReturnResult() throws Exception {
 
         String searchQuery = "boil";
-        Recipe recipeForSearch = new Recipe( "Test Recipe1", true,4,
+        Recipe recipeForSearch = new Recipe("Test Recipe1", true, 4,
                 List.of("ingredient1", "ingredient2"),
                 "boil water and place in oven");
 
@@ -201,7 +204,7 @@ public class ITRecipeApiTest extends BaseIntegrationTest{
 
         mockMvc.perform(get(ApiConstant.API_SEARCH_WITHIN_INSTRUCTIONS.getValue())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .queryParam("q",searchQuery))
+                        .queryParam("q", searchQuery))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("$[0].name", is(recipeSearchDto.getName())))
@@ -215,14 +218,14 @@ public class ITRecipeApiTest extends BaseIntegrationTest{
     void givenSearchParam_whenSearchWIthinInstructions_ThenReturnEmpty() throws Exception {
 
         String searchQuery = "xyz";
-        Recipe recipeForSearch = new Recipe( "Test Recipe1", true,4,
+        Recipe recipeForSearch = new Recipe("Test Recipe1", true, 4,
                 List.of("ingredient1", "ingredient2"),
                 "boil water and place in oven");
         recipeRepository.save(recipeForSearch);
 
         mockMvc.perform(get(ApiConstant.API_SEARCH_WITHIN_INSTRUCTIONS.getValue())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .queryParam("q",searchQuery))
+                        .queryParam("q", searchQuery))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("$.size()", is(0)));

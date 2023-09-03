@@ -18,10 +18,13 @@ public class RecipeSpecification implements Specification<Recipe> {
         return switch (criteria.getOperation()) {
             case EQUAL -> builder.equal(root.get(criteria.getSearchKey()), criteria.getValue());
             case NOT_EQUAL -> builder.notEqual(root.get(criteria.getSearchKey()), criteria.getValue());
-            case GREATER_THAN -> builder.greaterThan(root.get(criteria.getSearchKey()), (Comparable) criteria.getValue());
+            case GREATER_THAN ->
+                    builder.greaterThan(root.get(criteria.getSearchKey()), (Comparable) criteria.getValue());
             case LESS_THAN -> builder.lessThan(root.get(criteria.getSearchKey()), (Comparable) criteria.getValue());
-            case GREATER_THAN_OR_EQUAL -> builder.greaterThanOrEqualTo(root.get(criteria.getSearchKey()), (Comparable) criteria.getValue());
-            case LESS_THAN_OR_EQUAL -> builder.lessThanOrEqualTo(root.get(criteria.getSearchKey()), (Comparable) criteria.getValue());
+            case GREATER_THAN_OR_EQUAL ->
+                    builder.greaterThanOrEqualTo(root.get(criteria.getSearchKey()), (Comparable) criteria.getValue());
+            case LESS_THAN_OR_EQUAL ->
+                    builder.lessThanOrEqualTo(root.get(criteria.getSearchKey()), (Comparable) criteria.getValue());
             case LIKE -> builder.like(root.get(criteria.getSearchKey()), "%" + criteria.getValue() + "%");
             case NOT_LIKE -> builder.notLike(root.get(criteria.getSearchKey()), "%" + criteria.getValue() + "%");
             case IN -> root.get(criteria.getSearchKey()).in(criteria.getValue());

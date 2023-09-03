@@ -57,7 +57,7 @@ public class RecipeController {
     @GetMapping("/{recipeId}")
     public RecipeDto getRecipeById(@PathVariable Long recipeId) {
         return recipeService.getRecipeById(recipeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Recipe" , "recipeId" , recipeId));
+                .orElseThrow(() -> new ResourceNotFoundException("Recipe", "recipeId", recipeId));
     }
 
     @Operation(summary = "Update a recipe by ID")
@@ -71,6 +71,7 @@ public class RecipeController {
     public RecipeDto updateRecipe(@PathVariable Long recipeId, @RequestBody RecipeDto recipeDto) {
         return recipeService.updateRecipe(recipeId, recipeDto);
     }
+
     @Operation(summary = "Delete a recipe by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Recipe deleted successfully"),
@@ -78,7 +79,7 @@ public class RecipeController {
     })
     @DeleteMapping("/{recipeId}")
     public String deleteRecipe(@PathVariable Long recipeId) {
-       return recipeService.deleteRecipe(recipeId);
+        return recipeService.deleteRecipe(recipeId);
     }
 
 
@@ -100,8 +101,8 @@ public class RecipeController {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RecipeDto.class)))
             })
     })
-    @GetMapping ("/search/instructions")
-    public List<RecipeDto> searchRecipeByInstructions(@RequestParam("q") String searchQuery){
+    @GetMapping("/search/instructions")
+    public List<RecipeDto> searchRecipeByInstructions(@RequestParam("q") String searchQuery) {
         return recipeService.searchWithInInstructions(searchQuery);
     }
 }

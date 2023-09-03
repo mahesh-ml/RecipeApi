@@ -24,8 +24,6 @@ public class RecipeServiceImpl implements IRecipeService {
     private final RecipeMapper recipeMapper;
     private final RecipeRepository recipeRepository;
 
-
-
     @Override
     public List<RecipeDto> getAllRecipes() {
         List<Recipe> recipes = recipeRepository.findAll();
@@ -36,7 +34,7 @@ public class RecipeServiceImpl implements IRecipeService {
 
     @Override
     public Optional<RecipeDto> getRecipeById(Long id) {
-       return recipeRepository.findById(id).map(recipeMapper::recipeToRecipeDto);
+        return recipeRepository.findById(id).map(recipeMapper::recipeToRecipeDto);
     }
 
     @Override
@@ -49,7 +47,7 @@ public class RecipeServiceImpl implements IRecipeService {
     @Override
     public RecipeDto updateRecipe(Long id, RecipeDto recipeDto) {
         Recipe recipe = recipeRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Recipe" , "recipeId" , id));
+                .orElseThrow(() -> new ResourceNotFoundException("Recipe", "recipeId", id));
         recipe.setName(recipeDto.getName());
         recipe.setVegetarian(recipeDto.isVegetarian());
         recipe.setServings(recipeDto.getServings());
@@ -62,9 +60,9 @@ public class RecipeServiceImpl implements IRecipeService {
     @Override
     public String deleteRecipe(Long id) {
         Recipe recipe = recipeRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Recipe" , "recipeId" , id));
+                .orElseThrow(() -> new ResourceNotFoundException("Recipe", "recipeId", id));
         recipeRepository.deleteById(recipe.getRecipeId());
-        return String.format("Recipe with Id %d Deleted",id);
+        return String.format("Recipe with Id %d Deleted", id);
     }
 
     @Override
@@ -86,9 +84,9 @@ public class RecipeServiceImpl implements IRecipeService {
 
     @Override
     public List<RecipeDto> searchWithInInstructions(String searchQuery) {
-       return recipeRepository.findByInstructionsContaining(searchQuery).stream()
-               .map(recipeMapper::recipeToRecipeDto)
-               .collect(Collectors.toList());
+        return recipeRepository.findByInstructionsContaining(searchQuery).stream()
+                .map(recipeMapper::recipeToRecipeDto)
+                .collect(Collectors.toList());
     }
 
 

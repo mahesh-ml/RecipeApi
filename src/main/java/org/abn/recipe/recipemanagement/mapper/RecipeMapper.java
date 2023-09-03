@@ -12,11 +12,12 @@ public class RecipeMapper {
 
     private final ModelMapper modelMapper;
 
-    public RecipeDto recipeToRecipeDto(Recipe recipe){
-        return modelMapper.map(recipe,RecipeDto.class);
+    public RecipeDto recipeToRecipeDto(Recipe recipe) {
+        return modelMapper.map(recipe, RecipeDto.class);
     }
-    public Recipe recipeDtoToRecipe(RecipeDto recipeDto){
-        return modelMapper.map(recipeDto,Recipe.class);
+
+    public Recipe recipeDtoToRecipe(RecipeDto recipeDto) {
+        return modelMapper.map(recipeDto, Recipe.class);
 
     }
 
