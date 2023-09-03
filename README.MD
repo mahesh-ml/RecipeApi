@@ -1,20 +1,28 @@
 **Recipe Management API**
 
-The API allows users to manage their favourite recipes. It allows adding, updating, removing and fetching recipes.
-Additionally users should be able to filter available recipes based on different criterias.
-It also supports Text search within the instructions.
+The Recipe Management API is a tool that allows users to manage their favorite recipes. 
+It provides endpoints for adding, updating, removing, and fetching recipes, 
+as well as filtering available recipes based on different criteria. 
+Additionally, it supports text search within the instructions.
 
 **Tech Stack**
+
+The Recipe Management API is built using the following technologies:
+
 
     Spring Boot 3.1.3
     Java 17
     Maven
+    H2 for local storage
     Docker
-    Postgres docker image
+    Postgres docker image for integration tests
 
 **Endpoints**
 
+The following endpoints are available in the Recipe Management API:
+
 The postman collections can be found in /src/main/resources/RecipeApi.postman_collection.json
+
 
          **GET /receipes Get all recipes**
 
@@ -101,14 +109,17 @@ The postman collections can be found in /src/main/resources/RecipeApi.postman_co
 * Build the project using Maven by running **mvn clean install.**
 * Run the RecipeApplication by running **mvn spring-boot:run**
 * Please note that project needs following environment/tools - Java 17.
+* The default database at local is H2 which stores the recipe data, Any database can be configured by including relevant dependencies and configurations.
 * Since all the integration tests are run via postgres database from test container image, Docker must be installed in
   the machine.
 
 The application will start running on http://localhost:6060.
 The default port can be changed from application.properties.
 
-OpenAPI Link ->
+OpenAPI spec Link ->
 http://localhost:6060/swagger-ui/index.html
+
+
 
 Improvements -
 
