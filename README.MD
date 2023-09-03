@@ -18,15 +18,16 @@ The Recipe Management API is built using the following technologies:
     Postgres docker image for integration tests
 
 **Endpoints**
+The postman collections can be found in /src/main/resources/RecipeApi.postman_collection.json
+and api docs avaialble at  /src/main/resources/api-docs.json
+
 
 The following endpoints are available in the Recipe Management API:
 
-The postman collections can be found in /src/main/resources/RecipeApi.postman_collection.json
-
-
-         **GET /receipes Get all recipes**
+        1. **GET /receipes Get all recipes**
 
          Summary: Get a list of all recipes.
+
          Response:
          Status code: 200
          Description: List of all recipes
@@ -34,19 +35,21 @@ The postman collections can be found in /src/main/resources/RecipeApi.postman_co
          Schema: RecipeDto
 
 
-         **POST /receipes: Create a new recipe**
+       2.  **POST /receipes: Create a new recipe**
 
          Summary: Create a new recipe.
          Request body: RecipeDto
+
          Response:
          Status code: 201
          Description: Recipe created successfully
 
    
-         **GET /recipes/{recipeId}: Get a recipe by ID**
+       3. **GET /recipes/{recipeId}: Get a recipe by ID**
    
          Summary: Get a recipe by ID.
          Path parameter: recipeId
+
          Response:
          Status code: 200
          Description: Recipe found
@@ -55,11 +58,12 @@ The postman collections can be found in /src/main/resources/RecipeApi.postman_co
          Status code: 404
          Description: Recipe not found
    
-         **PUT /recipes/{recipeId}: Update a recipe by ID**
+       4.  **PUT /recipes/{recipeId}: Update a recipe by ID**
    
          Summary: Update a recipe by ID.
          Path parameter: recipeId
          Request body: RecipeDto
+
          Response:
          Status code: 200
          Description: Recipe updated successfully
@@ -69,10 +73,11 @@ The postman collections can be found in /src/main/resources/RecipeApi.postman_co
          Description: Recipe not found
    
    
-         **DELETE /recipes/{recipeId}: Delete a recipe by ID**
+       5.  **DELETE /recipes/{recipeId}: Delete a recipe by ID**
    
          Summary: Delete a recipe by ID.
          Path parameter: recipeId
+
          Response:
          Status code: 200
          Description: Recipe deleted successfully
@@ -81,10 +86,11 @@ The postman collections can be found in /src/main/resources/RecipeApi.postman_co
    
    
          
-         **POST /recipes/search: Search recipes by criteria**
+       6.  **POST /recipes/search: Search recipes by criteria**
    
          Summary: Search recipes by criteria.
          Request body: List<SearchCriteria>
+
          Response:
          Status code: 200
          Description: List of recipes matching the criteria
@@ -92,10 +98,11 @@ The postman collections can be found in /src/main/resources/RecipeApi.postman_co
          Schema: RecipeDto
    
    
-         **GET /search/instructions: Search recipes with in instructions**
+       7.  **GET /search/instructions: Search recipes with in instructions**
    
          Summary: Search recipes within instructions.
          Query parameter: q
+
          Response:
          Status code: 200
          Description: List of recipes matching the criteria
@@ -116,12 +123,17 @@ The postman collections can be found in /src/main/resources/RecipeApi.postman_co
 The application will start running on http://localhost:6060.
 The default port can be changed from application.properties.
 
-OpenAPI spec Link ->
-http://localhost:6060/swagger-ui/index.html
+OpenAPI spec Link : 
+
+ http://localhost:6060/swagger-ui/index.html
+
+API docs : 
+
+ http://localhost:6060/v3/api-docs
 
 
 
-Improvements -
+**Improvements -**
 
 * Deployment related details are not implemented yet such as docker-compose and k8s related files.
 * Security for role based access can be implemented .
