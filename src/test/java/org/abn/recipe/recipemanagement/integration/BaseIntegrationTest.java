@@ -12,7 +12,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ActiveProfiles("integration")
 public class BaseIntegrationTest {
     @Container
-    final static PostgreSQLContainer postgresqlContainer;
+    private final static PostgreSQLContainer postgresqlContainer;
 
     static {
         postgresqlContainer = new PostgreSQLContainer(

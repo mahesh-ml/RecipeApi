@@ -35,13 +35,13 @@ import static org.mockito.Mockito.*;
 public class RecipeServiceTest {
 
     @Mock
-    RecipeRepository recipeRepository;
+    private RecipeRepository recipeRepository;
     @InjectMocks
-    RecipeServiceImpl classUnderTest;
-    RecipeDto recipeDto1;
-    RecipeDto recipeDto2;
-    Recipe recipe;
-    Recipe recipeWithId;
+    private RecipeServiceImpl classUnderTest;
+    private RecipeDto recipeDto1;
+    private RecipeDto recipeDto2;
+    private Recipe recipe;
+    private Recipe recipeWithId;
     Long recipeId;
     @Mock
     private RecipeMapper recipeMapper;
@@ -51,13 +51,22 @@ public class RecipeServiceTest {
         recipeId = 11L;
         List<String> ingredients1 = List.of("ingredient1", "ingredient2");
         List<String> ingredients2 = List.of("ingredient3", "ingredient4");
+
         recipeDto1 = RecipeDto.builder()
-                .name("Recipe 1").vegetarian(true)
-                .servings(4).ingredients(ingredients1).instructions("Instruction1").build();
+                .name("Recipe 1")
+                .vegetarian(true)
+                .servings(4)
+                .ingredients(ingredients1)
+                .instructions("Instruction1")
+                .build();
 
         recipeDto2 = RecipeDto.builder()
-                .name("Recipe 2").vegetarian(false)
-                .servings(2).ingredients(ingredients2).instructions("Instruction2").build();
+                .name("Recipe 2")
+                .vegetarian(false)
+                .servings(2)
+                .ingredients(ingredients2)
+                .instructions("Instruction2")
+                .build();
 
         recipe = new Recipe("Test Recipe", true, 4, List.of("ingredient1", "ingredient2"),
                 "Instructions1");

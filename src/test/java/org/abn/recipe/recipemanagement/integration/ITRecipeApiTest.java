@@ -34,22 +34,22 @@ public class ITRecipeApiTest extends BaseIntegrationTest {
 
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
-    RecipeDto recipeDto;
+    private RecipeDto recipeDto;
 
     @Autowired
-    RecipeRepository recipeRepository;
+    private RecipeRepository recipeRepository;
 
-    Recipe recipe1;
+    private Recipe recipe1;
 
-    Recipe recipe2;
+    private Recipe recipe2;
 
 
     @BeforeEach
-    public void init() {
+    public void setup() {
 
         recipeRepository.deleteAll();
 
@@ -69,14 +69,13 @@ public class ITRecipeApiTest extends BaseIntegrationTest {
     @Test
     @DisplayName("Integration Test -> Test find all recipe")
     public void givenRecipeList_whenFindAll_thenReturnAllRecipes() throws Exception {
-        //given precondition or setup
+
         recipeRepository.save(recipe1);
         recipeRepository.save(recipe2);
 
-        //when - action or behaviour that we are testing
         ResultActions result = mockMvc.perform(get(ApiConstant.API_BASE_URL.getValue()));
 
-        //then -verify the output
+
         result.andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()", is(2)));
@@ -86,14 +85,12 @@ public class ITRecipeApiTest extends BaseIntegrationTest {
     @Test
     @DisplayName("Integration Test -> find recipe by Id")
     public void givenRecipeId_whenGetByRecipeId_thenReturnRecipe() throws Exception {
-        //given precondition or setup
+
         recipeRepository.save(recipe1);
-        //when - action or behaviour that we are testing
+
         ResultActions result = mockMvc
                 .perform(get(ApiConstant.API_BASE_URL_WITH_ID.getValue(), recipe1.getRecipeId()));
 
-
-        //then -verify the output
         result.andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is(recipeDto.getName())))
@@ -116,16 +113,11 @@ public class ITRecipeApiTest extends BaseIntegrationTest {
     @Test
     @DisplayName("Integration Test -> Delete recipe By Id ")
     public void givenRecipeId_whenDeleteRecipe_thenRecipeDeleted() throws Exception {
-        //given precondition or setup
         recipeRepository.save(recipe1);
 
         String expectedResponse = "Recipe with Id " + recipe1.getRecipeId() + " Deleted";
-
-
-        //when - action or behaviour that we are testing
         ResultActions result = mockMvc.perform(delete(ApiConstant.API_BASE_URL_WITH_ID.getValue(), recipe1.getRecipeId()));
 
-        //then -verify the output
         result.andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is(expectedResponse)));
@@ -150,10 +142,8 @@ public class ITRecipeApiTest extends BaseIntegrationTest {
     @Test
     @DisplayName("Integration Test -> create recipe ")
     public void givenRecipe_whenCreateRecipe_thenReturnRecipeCreated() throws Exception {
-        //given precondition or setup
         recipeRepository.save(recipe1);
 
-        //when - action or behaviour that we are testing
         mockMvc.perform(post(ApiConstant.API_BASE_URL.getValue())
                         .content(jsonString(recipeDto))
                         .contentType(MediaType.APPLICATION_JSON_VALUE))

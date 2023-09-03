@@ -37,21 +37,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RecipeControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @MockBean
-    IRecipeService recipeService;
+    private IRecipeService recipeService;
 
 
     @Autowired
-    ObjectMapper objectMapper;
-    RecipeDto recipeDto1;
-    RecipeDto recipeDto2;
+    private ObjectMapper objectMapper;
+
+    private RecipeDto recipeDto1;
+    private RecipeDto recipeDto2;
 
     @BeforeEach
-    public void init() {
+    public void setup() {
         List<String> ingredients1 = List.of("ingredient1", "ingredient2");
         List<String> ingredients2 = List.of("ingredient3", "ingredient4");
+
         recipeDto1 = RecipeDto.builder()
                 .name("Recipe 1").vegetarian(true)
                 .servings(4).ingredients(ingredients1).instructions("Instruction1").build();

@@ -96,7 +96,12 @@ The following endpoints are available in the Recipe Management API:
          Description: List of recipes matching the criteria
          Content: application/json
          Schema: RecipeDto
-   
+
+        SearchCriteria has three field searchKey( key name such as servings, ingredients etc) , 
+        SearchOperation and value( the value we want to search). 
+        SearchOperation can allow values such as  
+             EQUAL,NOT_EQUAL,GREATER_THAN,LESS_THAN,GREATER_THAN_OR_EQUAL,LESS_THAN_OR_EQUAL,LIKE,NOT_LIKE,IN,NOT_IN
+        
    
        7.  **GET /search/instructions: Search recipes with in instructions**
    

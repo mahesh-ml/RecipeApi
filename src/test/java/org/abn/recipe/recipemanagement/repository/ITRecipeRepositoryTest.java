@@ -19,9 +19,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ITRecipeRepositoryTest extends BaseIntegrationTest {
 
     @Autowired
-    RecipeRepository recipeRepository;
+    private RecipeRepository recipeRepository;
 
-    Recipe recipe;
+    private Recipe recipe;
 
     @BeforeEach
     public void init() {
@@ -37,10 +37,8 @@ public class ITRecipeRepositoryTest extends BaseIntegrationTest {
     @DisplayName("Data JPA test -> save operation")
     public void givenRecipeObject_whenSave_thenReturnSavedRecipe() {
 
-        //when - action or behaviour that we are testing
         Recipe savedRecipe = recipeRepository.save(recipe);
 
-        //then -verify the output
         assertThat(savedRecipe).isNotNull();
         assertThat(savedRecipe.getRecipeId()).isEqualTo(recipe.getRecipeId());
         assertThat(savedRecipe.getName()).isEqualTo(recipe.getName());
@@ -52,13 +50,10 @@ public class ITRecipeRepositoryTest extends BaseIntegrationTest {
     @Test
     @DisplayName("Data JPA test -> find All operation")
     public void givenRecipeList_whenFindAll_thenReturnRecipeList() {
-        //given precondition or setup
         recipeRepository.save(recipe);
 
-        //when - action or behaviour that we are testing
         List<Recipe> recipes = recipeRepository.findAll();
 
-        //then -verify the output
         assertThat(recipes).isNotNull();
         assertThat(recipes.size()).isEqualTo(1);
 
@@ -68,13 +63,10 @@ public class ITRecipeRepositoryTest extends BaseIntegrationTest {
     @Test
     @DisplayName("Data JPA test -> find By Id operation")
     public void givenRecipeId_whenFindById_thenReturnRecipe() {
-        //given precondition or setup
 
         recipeRepository.save(recipe);
-        //when - action or behaviour that we are testing
         Optional<Recipe> foundRecipe = recipeRepository.findById(recipe.getRecipeId());
 
-        //then -verify the output
         assertThat(foundRecipe).isNotEmpty();
 
     }
